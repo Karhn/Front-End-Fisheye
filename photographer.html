@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
   <head>
     <link href="css/style.css" rel="stylesheet" type="text/css" />
     <meta charset="utf-8">
@@ -8,13 +8,15 @@
     <title>Fisheye - photographe </title>
   </head>
   <body>
-    <header>
-      <img src="assets/images/logo.png" class="logo" />
+    <header role="banner">
+      <a href="index.html" aria-label="Retour à la page d'acceuil">
+        <img src="assets/images/logo.png" class="logo" alt="Fisheye - Retour page d'acceuil" />
+      </a>
     </header>
-    <main id="main">
-      <div class="photograph-header">
+    <main id="main" role="main">
+      <section class="photograph-header" aria-label="Présentation du photographe" role="region">
         <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
-      </div>
+      </section>
     </main>
     <div id="contact_modal">
 			<div class="modal">

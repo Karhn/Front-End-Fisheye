@@ -3,12 +3,62 @@
 }
 
 .photograph-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px 100px;
     background-color: #FAFAFA;
     height: 300px;
     margin: 0 100px;
 }
 
+.photograph-header .info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.photographer-infoBlock {
+    display: flex;
+    flex-direction: column;
+}
+
+.photographer-profile {
+    order: 3;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.photographer-nameHeader {
+    font-size: 64px;
+    font-weight: 400;
+    color: #D3573C;
+    margin: 0;
+}
+
+.photographer-locationHeader {
+    font-size: 24px;
+    font-weight: 400;
+    color: #901C1C;
+}
+
+.photographer-taglineHeader {
+    font-size: 18px;
+    margin: 5px 0 0 0;
+    color: #525252;
+}
+
+.photographer-infoBar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #DB8876;
+}
+
 .contact_button {
+    order: 2;
     font-size: 20px;
     font-weight: bold;
     color: white;

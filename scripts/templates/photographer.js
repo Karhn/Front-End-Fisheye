@@ -9,7 +9,7 @@ function photographerTemplate(data) {
 
         const link = document.createElement( 'a' );
         link.setAttribute("href", `photographer.html?id=${id}`);
-        link.setAttribute("aria-label", name)
+        link.setAttribute("aria-label", `Accéder au profil de ${name}`)
         link.setAttribute("tabindex", "0");
 
         const img = document.createElement( 'img' );
