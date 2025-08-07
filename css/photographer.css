@@ -51,11 +51,31 @@
 }
 
 .photographer-infoBar {
+    display: flex;
+    align-items: center;
     position: fixed;
     bottom: 0;
-    width: 100%;
+    right: 0;
+    right: 40px;
     background-color: #DB8876;
+    padding: 10px 20px;
+    gap: 30px;
+    border-radius: 5px 5px 0 0;
+    font-size: 24px;
+    font-weight: 500;
 }
+
+.photographer-infoBar .total-likes {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.likes-container i {
+    margin-left: 5px;
+    font-size: 22px;
+}
+
 
 .contact_button {
     order: 2;

@@ -28,7 +28,7 @@ async function init() {
     const mediaList = await getPhotographerMedia();
 
     displayPhotographerHeader(photographer);
-    displayPhotographerInfoBar(photographer, mediaList);
+    createPhotographerInfoBar(photographer, mediaList);
 }
 
 init();
@@ -74,21 +74,35 @@ function displayPhotographerHeader(photographer) {
 
 }
 
-function displayPhotographerInfoBar(photographer, mediaList) {
+function createPhotographerInfoBar(photographer, mediaList) {
 
-    const infoBar = document.querySelector(".photographer-infoBar");
+    const main = document.getElementById("main");
+
+    const infoBar = document.createElement("div");
+    infoBar.classList.add("photographer-infoBar");
+    infoBar.setAttribute("aria-label", "Informations du photographe");
 
     const totalLikes = mediaList.reduce((sum, media) => sum + media.likes, 0);
 
-    const likesDiv = document.createElement("div");
-    likesDiv.classList.add("total-likes");
-    likesDiv.innerHTML = `${totalLikes} <span aria-label="likes">❤️</span>`;
+    const likesContainer = document.createElement("div");
+    likesContainer.classList.add("likes-container");
 
-    const priceDiv = document.createElement("div");
-    priceDiv.classList.add("prices");
-    priceDiv.textContent = `${photographer.price}€ / jour`;
+    const likesCount = document.createElement("span");
+    likesCount.textContent = totalLikes;
+    likesCount.classList.add("likes-count");
 
-    infoBar.appendChild(likesDiv);
-    infoBar.appendChild(priceDiv);
+    const heartIcon = document.createElement("i");
+    heartIcon.classList.add("fa", "fa-heart");
 
+    likesContainer.appendChild(likesCount);
+    likesContainer.appendChild(heartIcon);
+
+    const priceElement = document.createElement("span");
+    priceElement.classList.add("daily-price");
+    priceElement.textContent = `${photographer.price}€ / jour`;
+
+    infoBar.appendChild(likesContainer);
+    infoBar.appendChild(priceElement);
+
+    main.appendChild(infoBar);
 }
