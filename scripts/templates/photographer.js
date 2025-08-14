@@ -23,22 +23,29 @@ function photographerTemplate(data) {
         link.appendChild(h2);
         article.appendChild(link);
 
+        const infoGroup = document.createElement("div");
+        infoGroup.classList.add("photographer-info");
+        infoGroup.setAttribute("tabindex", "0");
+        infoGroup.setAttribute("role", "group");
+        infoGroup.setAttribute("aria-label", `Localisation : ${city}, ${country}. Phrase d'accroche : ${tagline}. Tarif : ${price} euros par jour.`);
+
         const location = document.createElement( 'p' );
         location.classList.add("photographer-location");
         location.textContent = `${city}, ${country}`;
+        location.setAttribute("aria-hidden", "true");
 
         const taglineElement = document.createElement( 'p' );
         taglineElement.classList.add("photographer-tagline");
         taglineElement.textContent = tagline;
+        taglineElement.setAttribute("aria-hidden", "true");
 
         const priceElement = document.createElement( 'p' );
         priceElement.classList.add("photographer-price");
         priceElement.textContent = `${price}€/jour`;
+        priceElement.setAttribute("aria-hidden", "true");
 
-
-        article.appendChild(location);
-        article.appendChild(taglineElement);
-        article.appendChild(priceElement);
+        infoGroup.append(location, taglineElement, priceElement);
+        article.appendChild(infoGroup);
 
         return (article);
     }
