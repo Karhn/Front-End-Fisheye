@@ -1,4 +1,5 @@
 import { mediaFactory } from "../utils/mediaFactory.js";
+import { initContactForm } from "../utils/contactForm.js";
 
 function getPhotographerIdFromURL() {
     const params = new URLSearchParams(window.location.search);
@@ -32,6 +33,33 @@ async function init() {
     displayPhotographerHeader(photographer);
     createPhotographerInfoBar(photographer, mediaList);
     displayPhotographerMedia(photographer, mediaList);
+
+    initContactForm(photographer);
+
+    const sortMenu = document.getElementById("sortMenu");
+    sortMenu.setAttribute("tabindex", "0");
+    const sortLabel = document.getElementById("sortCurrentLabel");
+    sortLabel.setAttribute("tabindex", "0");
+    const sortButton = document.getElementById("sortMenuButton");
+    sortButton.setAttribute("tabindex", "0");
+
+    if (sortMenu && sortLabel && sortButton) {
+        sortMenu.addEventListener("click", (e) => {
+            const item = e.target.closest("[data-sort]");
+            if (!item) return;
+
+            sortLabel.textContent = item.textContent.trim();
+
+            const criteria = item.getAttribute("data-sort");
+            sortAndDisplay(photographer, mediaList, criteria);
+
+            bootstrap.Dropdown.getOrCreateInstance(sortButton).hide();
+
+            sortMenu.querySelectorAll("[role='menuitemradio']")
+                .forEach(element => element.setAttribute("aria-checked", "false"));
+            item.setAttribute("aria-checked", "true");
+        });
+    }
 }
 
 init();
@@ -140,11 +168,27 @@ function displayPhotographerMedia(photographer, mediaList) {
     mediaSection.setAttribute("aria-label", "Galerie des médias du photographe");
     main.appendChild(mediaSection);
 
+    const folderName = photographer.name.split(" ")[0];
+    const lightboxItems = mediaList
+        .filter(media => media.image)
+        .map(media => ({ src: `assets/images/${folderName}/${media.image}`, title: media.title }));
+    const lightbox = bootstrapLightbox(lightboxItems)
+
     mediaList.forEach(media => {
         
         const mediaElement = mediaFactory(media, photographer.name);
         mediaElement.setAttribute("tabindex", "0");
         mediaElement.setAttribute("aria-label", `${media.title} Appuyez sur Entrée pour interagir`);
+
+        if (media.image) {
+          const src = `assets/images/${folderName}/${media.image}`;
+          const indexInLightbox = lightboxItems.findIndex(item => item.src === src);
+          const openLightbox = () => lightbox.show(indexInLightbox);
+          mediaElement.addEventListener("click", openLightbox);
+          mediaElement.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLightbox(); }
+          });
+        }
 
         const card = document.createElement("article");
         card.classList.add("media-card");
@@ -208,4 +252,86 @@ function displayPhotographerMedia(photographer, mediaList) {
         mediaSection.appendChild(card);
 
     });
+}
+
+function bootstrapLightbox(lightboxItems) {
+
+    const modalElement = document.getElementById("lightboxModal");
+    const modal = new bootstrap.Modal(modalElement, { keyboard: true });
+    const imageElement = document.getElementById("lightboxImage");
+    const labelElement = document.getElementById("lightboxLabel");
+    const previousBtn = document.getElementById("lightboxPreviousBtn");
+    const nextBtn = document.getElementById("lightboxNextBtn");
+
+    let currentIndex = 0;
+
+    function render() {
+        const image = lightboxItems.length;
+        if (!image) return;
+
+        currentIndex = (currentIndex + image) % image;
+
+        const { src, title } = lightboxItems[currentIndex];
+        imageElement.src = src;
+        imageElement.alt = title || "";
+        labelElement.textContent = title || "";
+    }
+
+    function show(index) {
+        currentIndex = index;
+        render();
+        modal.show();
+    }
+
+    function showNext() {
+        currentIndex += 1, render();
+    }
+
+    function showPrevious() {
+        currentIndex -= 1, render();
+    }
+
+    previousBtn.addEventListener("click", showPrevious);
+    nextBtn.addEventListener("click", showNext);
+
+    modalElement.addEventListener("shown.bs.modal", () => {
+        const onKey = (e) => {
+            if (e.key === "ArrowRight") {
+                e.preventDefault(); showNext();
+            }
+            if (e.key === "ArrowLeft") {
+                e.preventDefault(); showPrevious();
+            }
+        };
+
+        document.addEventListener("keydown", onKey);
+
+        modalElement.addEventListener("hidden.bs.modal", () => {
+            document.removeEventListener("keydown", onKey);
+        }, { once : true });
+    });
+
+    return {show};
+}
+
+function sortAndDisplay(photographer, mediaList, criteria) {
+
+    const sortedList = [...mediaList];
+
+    if (criteria === "popularity") {
+        sortedList.sort((a,b) => b.likes - a.likes);
+    } else if (criteria === "date") {
+        sortedList.sort((a,b) => new Date(b.date) - new Date(a.date));
+    } else if (criteria === "title") {
+        sortedList.sort((a,b) => a.title.localeCompare(b.title, "fr", {sensitivity: "base"}));
+    }
+
+    console.log("Trier par :", criteria, sortedList.map(m =>({
+        titre: m.title,
+        likes: m.likes,
+        date: m.date
+    })));
+
+    document.querySelector(".media-section")?.remove();
+    displayPhotographerMedia(photographer, sortedList);
 }
