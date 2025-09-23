@@ -38,31 +38,9 @@ async function init() {
 
   initContactForm(photographer);
 
-  const sortMenu = document.getElementById("sortMenu");
-  sortMenu.setAttribute("tabindex", "0");
-  const sortLabel = document.getElementById("sortCurrentLabel");
-  sortLabel.setAttribute("tabindex", "0");
-  const sortButton = document.getElementById("sortMenuButton");
-  sortButton.setAttribute("tabindex", "0");
+  sortAndDisplay(photographer, mediaList, "popularity");
+  initDropdown(photographer, mediaList);
 
-  if (sortMenu && sortLabel && sortButton) {
-    sortMenu.addEventListener("click", (e) => {
-      const item = e.target.closest("[data-sort]");
-      if (!item) return;
-
-      sortLabel.textContent = item.textContent.trim();
-
-      const criteria = item.getAttribute("data-sort");
-      sortAndDisplay(photographer, mediaList, criteria);
-
-      bootstrap.Dropdown.getOrCreateInstance(sortButton).hide();
-
-      sortMenu
-        .querySelectorAll("[role='menuitemradio']")
-        .forEach((element) => element.setAttribute("aria-checked", "false"));
-      item.setAttribute("aria-checked", "true");
-    });
-  }
 }
 
 init();
@@ -99,14 +77,19 @@ function displayPhotographerHeader(photographer) {
   infoDiv.appendChild(nameElement);
   infoDiv.appendChild(infoBlock);
 
+  const imgWrapper = document.createElement("div");
+  imgWrapper.classList.add("profile-wrapper");
+
   const img = document.createElement("img");
   img.setAttribute("tabindex", "0");
   img.setAttribute("src", `assets/photographers/${photographer.portrait}`);
   img.setAttribute("alt", `Portrait de ${photographer.name}`);
   img.classList.add("photographer-profile");
 
+  imgWrapper.appendChild(img)
+
   headerSection.insertBefore(infoDiv, headerSection.firstChild);
-  headerSection.appendChild(img);
+  headerSection.appendChild(imgWrapper);
 }
 
 function createPhotographerInfoBar(photographer, mediaList) {
@@ -172,8 +155,11 @@ function displayPhotographerMedia(photographer, mediaList) {
 
   const folderName = photographer.name.split(" ")[0];
   const lightboxItems = mediaList
-    .filter((media) => media.image)
-    .map((media) => ({ src: `assets/images/${folderName}/${media.image}`, title: media.title }));
+    .filter((media) => media.image || media.video)
+    .map((media) => media.image 
+      ? { type: "image", src: `assets/images/${folderName}/${media.image}`, title: media.title }
+      : { type: "video", src: `assets/images/${folderName}/${media.video}`, title: media.title }
+  );
   const lightbox = bootstrapLightbox(lightboxItems);
 
   mediaList.forEach((media) => {
@@ -181,10 +167,14 @@ function displayPhotographerMedia(photographer, mediaList) {
     mediaElement.setAttribute("tabindex", "0");
     mediaElement.setAttribute("aria-label", `${media.title} Appuyez sur Entrée pour interagir`);
 
-    if (media.image) {
-      const src = `assets/images/${folderName}/${media.image}`;
+    if (media.image || media.video) {
+      const src = media.image 
+        ? `assets/images/${folderName}/${media.image}`
+        : `assets/images/${folderName}/${media.video}`;
+
       const indexInLightbox = lightboxItems.findIndex((item) => item.src === src);
       const openLightbox = () => lightbox.show(indexInLightbox);
+
       mediaElement.addEventListener("click", openLightbox);
       mediaElement.addEventListener("keydown", (e) => {
         if (e.key === "Enter" || e.key === " ") {
@@ -267,11 +257,20 @@ function bootstrapLightbox(lightboxItems) {
   const modalElement = document.getElementById("lightboxModal");
   const modal = new bootstrap.Modal(modalElement, { keyboard: true });
   const imageElement = document.getElementById("lightboxImage");
+  const videoElement = document.getElementById("lightboxVideo");
   const labelElement = document.getElementById("lightboxLabel");
   const previousBtn = document.getElementById("lightboxPreviousBtn");
   const nextBtn = document.getElementById("lightboxNextBtn");
+  const viewport = document.getElementById("lightboxViewport");
 
   let currentIndex = 0;
+
+  function stopVideo() {
+    if (!videoElement) return;
+    videoElement.pause();
+    videoElement.removeAttribute("src");
+    videoElement.load();
+  }
 
   function render() {
     const image = lightboxItems.length;
@@ -279,10 +278,30 @@ function bootstrapLightbox(lightboxItems) {
 
     currentIndex = (currentIndex + image) % image;
 
-    const { src, title } = lightboxItems[currentIndex];
-    imageElement.src = src;
-    imageElement.alt = title || "";
-    labelElement.textContent = title || "";
+    const item = lightboxItems[currentIndex];
+
+    labelElement.textContent = item.title || "";
+
+    if (item.type === "video") {
+      
+      imageElement.hidden = true;
+      imageElement.removeAttribute("src");
+      imageElement.removeAttribute("alt");
+
+      videoElement.hidden = false;
+      if (videoElement.src !== item.src) {
+        videoElement.src = item.src;
+        videoElement.load();
+      }
+    } else {
+      stopVideo();
+      videoElement.hidden = true;
+
+      imageElement.hidden = false;
+      if (imageElement.src !== item.src) imageElement.src = item.src;
+      imageElement.alt = item.title || "";
+    }
+
   }
 
   function show(index) {
@@ -292,17 +311,24 @@ function bootstrapLightbox(lightboxItems) {
   }
 
   function showNext() {
-    ((currentIndex += 1), render());
+    stopVideo();
+    currentIndex += 1; 
+    render();
   }
 
   function showPrevious() {
-    ((currentIndex -= 1), render());
+    stopVideo();
+    currentIndex -= 1; 
+    render();
   }
 
   previousBtn.addEventListener("click", showPrevious);
   nextBtn.addEventListener("click", showNext);
 
   modalElement.addEventListener("shown.bs.modal", () => {
+
+    viewport.focus();
+
     const onKey = (e) => {
       if (e.key === "ArrowRight") {
         e.preventDefault();
@@ -314,12 +340,13 @@ function bootstrapLightbox(lightboxItems) {
       }
     };
 
-    document.addEventListener("keydown", onKey);
+    modalElement.addEventListener("keydown", onKey);
 
     modalElement.addEventListener(
       "hidden.bs.modal",
       () => {
         document.removeEventListener("keydown", onKey);
+        stopVideo();
       },
       { once: true }
     );
@@ -331,12 +358,18 @@ function bootstrapLightbox(lightboxItems) {
 function sortAndDisplay(photographer, mediaList, criteria) {
   const sortedList = [...mediaList];
 
-  if (criteria === "popularity") {
-    sortedList.sort((a, b) => b.likes - a.likes);
-  } else if (criteria === "date") {
-    sortedList.sort((a, b) => new Date(b.date) - new Date(a.date));
-  } else if (criteria === "title") {
-    sortedList.sort((a, b) => a.title.localeCompare(b.title, "fr", { sensitivity: "base" }));
+  switch (criteria) {
+    case "popularity":
+      sortedList.sort((a, b) => b.likes - a.likes);
+      break;
+    case "date":
+      sortedList.sort((a, b) => new Date(b.date) - new Date(a.date));
+      break;
+    case "title":
+      sortedList.sort((a, b) =>
+        a.title.localeCompare(b.title, "fr", { sensitivity: "base" })
+      );
+      break;
   }
 
   console.log(
@@ -351,4 +384,35 @@ function sortAndDisplay(photographer, mediaList, criteria) {
 
   document.querySelector(".media-section")?.remove();
   displayPhotographerMedia(photographer, sortedList);
+}
+
+function initDropdown(photographer, mediaList) {
+  const dropdown = document.getElementById("sortDropdown");
+  const btn = document.getElementById("sortBtn");
+  const menu = dropdown.querySelector(".dropdown-menu");
+
+  dropdown.addEventListener("show.bs.dropdown", () => {
+    const current = btn.dataset.value || "popularity";
+    menu.querySelectorAll(".dropdown-item").forEach(item => {
+      const li = item.closest("li");
+      li.style.display = (item.dataset.value === current) ? "none" : "";
+    });
+    btn.classList.add("is-open");
+    menu.classList.add("is-open");
+  });
+
+  menu.addEventListener("click", (e) => {
+    const item = e.target.closest(".dropdown-item");
+    if (!item) return;
+
+    menu.querySelectorAll('.dropdown-item').forEach(element => element.classList.remove("active"));
+    item.classList.add("active");
+    btn.textContent = item.textContent;
+    btn.dataset.value = item.dataset.value;
+
+    sortAndDisplay(photographer, mediaList, item.dataset.value);
+  });
+
+  const initial = btn.dataset.value || "popularity";
+  sortAndDisplay(photographer, mediaList, initial);
 }

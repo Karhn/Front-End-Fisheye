@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="fr">
   <head>
-    <link href="css/style.css" rel="stylesheet" type="text/css" />
     <meta charset="utf-8" />
+
     <link rel="icon" type="image/png" href="assets/favicon.png" />
     <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet" />
     <link
@@ -14,6 +14,8 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+
+        <link href="css/style.css" rel="stylesheet" type="text/css" />
 
     <title>Fisheye - photographe</title>
   </head>
@@ -35,53 +37,31 @@
         </button>
       </section>
 
-      <section class="sort-bar" aria-label="Tri de la galerie">
-        <span class="sort-label"> Trier par : </span>
-        <div class="dropdown sort-dropdown">
-          <button
-            id="sortMenuButton"
-            class="btn btn-sort dropdown-toggle"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <span id="sortCurrentLabel"> Popularité </span>
-          </button>
+        <div class="sort-bar" aria-label="Tri de la galerie">
+          <label id="sortLabel" class="sort-label"> Trier par : </label>
+            <div id="sortDropdown" class="dropdown">
+              <button id="sortBtn" class="btn dropdown-toggle fw-bold sort-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="listbox" aria-controls="sortMenu" aria-labelledby="sortLabel sortBtn"> Popularité </button>
 
-          <ul class="dropdown-menu" aria-labelledby="sortMenuButton" role="menu" id="sortMenu">
-            <li>
-              <button
-                class="dropdown-item"
-                role="menuitemradio"
-                aria-checked="true"
-                data-sort="popularity"
-              >
-                Popularité
-              </button>
-            </li>
-            <li>
-              <button
-                class="dropdown-item"
-                role="menuitemradio"
-                aria-checked="false"
-                data-sort="date"
-              >
-                Date
-              </button>
-            </li>
-            <li>
-              <button
-                class="dropdown-item"
-                role="menuitemradio"
-                aria-checked="false"
-                data-sort="title"
-              >
-                Titre
-              </button>
-            </li>
-          </ul>
+              <ul id="sortMenu" class="dropdown-menu sort-menu" role="listbox" aria-labelledby="sortLabel">
+                <li>
+                  <button class="dropdown-item active" type="button" role="option" data-value="popularity">
+                    Popularité
+                  </button>
+                </li>
+                <li>
+                  <button class="dropdown-item" type="button" role="option" data-value="date">
+                    Date
+                  </button>
+                </li>
+                <li>
+                  <button class="dropdown-item" type="button" role="option" data-value="title">
+                    Titre
+                  </button>
+                </li>
+              </ul>
+
+            </div>
         </div>
-      </section>
     </main>
 
     <div class="modal fade" id="contactModal" tabindex="-1">
@@ -96,7 +76,7 @@
               type="button"
               class="btn-close"
               data-bs-dismiss="modal"
-              aria-label="Fermer"
+              aria-label="Close Contact form"
             ></button>
           </div>
 
@@ -104,17 +84,17 @@
             <form id="contactForm" novalidate>
               <div class="mb-3">
                 <label for="firstName" class="form-label">Prénom</label>
-                <input id="firstName" name="firstName" type="text" class="form-control" required />
+                <input id="firstName" name="firstName" type="text" class="form-control" aria-label="Frist name"/>
               </div>
 
               <div class="mb-3">
                 <label for="lastName" class="form-label">Nom</label>
-                <input id="lastName" name="lastName" type="text" class="form-control" required />
+                <input id="lastName" name="lastName" type="text" class="form-control" aria-label="Last name"/>
               </div>
 
               <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input id="email" name="email" type="text" class="form-control" required />
+                <input id="email" name="email" type="text" class="form-control" aria-label="Email"/>
               </div>
 
               <div class="mb-3">
@@ -124,7 +104,7 @@
                   name="message"
                   rows="6"
                   class="form-control"
-                  required
+                  aria-label="Your message"
                 ></textarea>
               </div>
 
@@ -132,7 +112,7 @@
                 type="submit"
                 class="contact_button"
                 data-bs-dismiss="modal"
-                aria-label="Envoyer"
+                aria-label="Send"
               >
                 Envoyer
               </button>
@@ -146,8 +126,11 @@
       class="modal fade"
       id="lightboxModal"
       tabindex="-1"
+      role="dialog"
       aria-label="lightboxLabel"
-      aria-hidden="true"
+      aria-modal="true"
+      aria-labelledby="lightboxLabel"
+      aria-describedby="lightboxHelp"
     >
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content bg-white text-white position-relative">
@@ -156,12 +139,15 @@
               type="button"
               class="btn-close"
               data-bs-dismiss="modal"
-              aria-label="Fermer"
+              aria-label="Close dialog"
             ></button>
           </div>
 
           <div class="modal-body text-center p-0">
-            <img id="lightboxImage" class="img-fluid d-block mx-auto" alt="" />
+            <div class="lb-frame" id="lightboxViewport" tabindex="-1">
+              <img id="lightboxImage" class="img-fluid mx-auto" alt="" />
+              <video id="lightboxVideo" class="img-fluid mx-auto" hidden controls preaload="metadata"></video>
+            </div>
             <h3 class="modal-title" id="lightboxLabel"></h3>
           </div>
 
@@ -169,7 +155,7 @@
             type="button"
             id="lightboxPreviousBtn"
             class="lb-arrow lb-prev"
-            aria-label="Image précédente"
+            aria-label="Previous image"
           >
             ❮
           </button>
@@ -177,7 +163,7 @@
             type="button"
             id="lightboxNextBtn"
             class="lb-arrow lb-next"
-            aria-label="Image suivante"
+            aria-label="Next image"
           >
             ❯
           </button>
