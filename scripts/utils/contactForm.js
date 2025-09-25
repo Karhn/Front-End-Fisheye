@@ -14,22 +14,20 @@ export function initContactForm(photographer) {
       email: document.getElementById("email")?.value.trim() ?? "",
       message: document.getElementById("message")?.value.trim() ?? "",
       photographerId: photographer.id ?? null,
-      photograpgerName: photographer?.name ?? "",
+      photographerName: photographer?.name ?? "",
     };
 
     if (!data.firstName || !data.lastName || !data.email || !data.message) {
-      form.reportValidate();
+      form.reportValidity();
       return;
     }
 
     console.log("Contact Form:", data);
 
     const modalEl = document.getElementById("contactModal");
-    const modal = window.bootstrap?.Modal.getOrCreateInstance(modalEl);
-    modal?.hide();
+    const modal = window.bootstrap.Modal.getOrCreateInstance(modalEl);
+    modal.hide();
 
     form.reset();
-
-    document.querySelector(`[data-bs-target="#contactModal"]`)?.focus();
   });
 }

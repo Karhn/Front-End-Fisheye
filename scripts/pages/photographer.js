@@ -34,13 +34,8 @@ async function init() {
 
   displayPhotographerHeader(photographer);
   createPhotographerInfoBar(photographer, mediaList);
-  displayPhotographerMedia(photographer, mediaList);
-
   initContactForm(photographer);
-
-  sortAndDisplay(photographer, mediaList, "popularity");
   initDropdown(photographer, mediaList);
-
 }
 
 init();
@@ -264,6 +259,7 @@ function bootstrapLightbox(lightboxItems) {
   const viewport = document.getElementById("lightboxViewport");
 
   let currentIndex = 0;
+  let openerElement = null;
 
   function stopVideo() {
     if (!videoElement) return;
@@ -325,6 +321,10 @@ function bootstrapLightbox(lightboxItems) {
   previousBtn.addEventListener("click", showPrevious);
   nextBtn.addEventListener("click", showNext);
 
+  modalElement.addEventListener("show.bs.modal", (e) => {
+    openerElement = e.relatedTarget || document.activeElement || null;
+  });
+
   modalElement.addEventListener("shown.bs.modal", () => {
 
     viewport.focus();
@@ -347,6 +347,9 @@ function bootstrapLightbox(lightboxItems) {
       () => {
         document.removeEventListener("keydown", onKey);
         stopVideo();
+
+        if (openerElement && typeof openerElement.focus === "function") openerElement.focus();
+        openerElement = null;
       },
       { once: true }
     );
@@ -388,6 +391,9 @@ function sortAndDisplay(photographer, mediaList, criteria) {
 
 function initDropdown(photographer, mediaList) {
   const dropdown = document.getElementById("sortDropdown");
+  if (dropdown.dataset.sortInit === "1" ) return;
+  dropdown.dataset.sortInit = "1";
+  
   const btn = document.getElementById("sortBtn");
   const menu = dropdown.querySelector(".dropdown-menu");
 

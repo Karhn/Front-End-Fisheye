@@ -1,21 +1,17 @@
-#contact_modal {
-  display: none;
-}
-
 .photograph-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 40px 100px;
+  padding: 2.5rem 6.25rem;
   background-color: #fafafa;
-  height: 300px;
-  margin: 0 100px;
+  height: 18.75rem;
+  margin: 0 6.25rem;
 }
 
 .photograph-header .info {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 0.938rem;
 }
 
 .photographer-infoBlock {
@@ -29,8 +25,8 @@ a {
 
 .profile-wrapper {
   order: 3;
-  width: 200px;
-  height: 200px;
+  width: 12.5rem;
+  height: 12.5rem;
   border-radius: 50%;
   overflow: hidden;
 }
@@ -44,8 +40,8 @@ a {
 }
 
 .avatar {
-  width: 200px;
-  height: 200px;
+  width: 12.5rem;
+  height: 12.5rem;
   border-radius: 50%;
   overflow: hidden;
   margin: 0 auto 1rem;
@@ -58,21 +54,21 @@ a {
 }
 
 .photographer-nameHeader {
-  font-size: 64px;
+  font-size: 4rem;
   font-weight: 400;
   color: #d3573c;
   margin: 0;
 }
 
 .photographer-locationHeader {
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 400;
   color: #901c1c;
 }
 
 .photographer-taglineHeader {
-  font-size: 18px;
-  margin: 5px 0 0 0;
+  font-size: 1.125rem;
+  margin: 0.313rem 0 0 0;
   color: #525252;
 }
 
@@ -81,37 +77,36 @@ a {
   align-items: center;
   position: fixed;
   bottom: 0;
-  right: 0;
-  right: 40px;
+  right: 2.5rem;
   background-color: #db8876;
-  padding: 10px 20px;
-  gap: 30px;
-  border-radius: 5px 5px 0 0;
-  font-size: 24px;
+  padding: 0.625rem 1.25rem;
+  gap: 1.875rem;
+  border-radius: 0.313rem 0.313rem 0 0;
+  font-size: 1.5rem;
   font-weight: 500;
 }
 
 .photographer-infoBar .total-likes {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
 }
 
 .likes-container i {
-  margin-left: 5px;
-  font-size: 22px;
+  margin-left: 0.5rem;
+  font-size: 1.375rem;
 }
 
 .media-section {
   display: flex;
   flex-wrap: wrap;
-  gap: 95px;
-  margin: 40px 100px;
+  gap: 5.938rem;
+  margin: 2.5rem 6.25rem;
 }
 
 .media-card {
-  width: 350px;
-  height: 350px;
+  width: 21.875rem;
+  height: 21.875rem;
   color: #901c1c;
 }
 
@@ -119,32 +114,32 @@ a {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 0.625rem;
 }
 
 .media-info h2 {
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 400;
 }
 
 .media-content {
   width: 100%;
   height: 100%;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   object-fit: cover;
 }
 
 .media-likes i {
-  margin-left: 5px;
-  font-size: 18px;
+  margin-left: 0.5rem;
+  font-size: 1.125rem;
   cursor: pointer;
 }
 
 .media-likes {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 20px;
+  gap: 0.625rem;
+  font-size: 1.25rem;
 }
 
 .sr-only {
@@ -173,46 +168,46 @@ a {
 
 .contact_button {
   order: 2;
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: bold;
   color: white;
-  padding: 11px;
-  width: 170px;
-  height: 70px;
+  padding: 0.688rem;
+  width: 10.625rem;
+  height: 4.375rem;
   border: none;
   background-color: #901c1c;
-  border-radius: 5px;
+  border-radius: 0.313rem;
   cursor: pointer;
 }
 
 #contactModal .contact-card {
-  border-radius: 5px;
+  border-radius: 0.313rem;
   background-color: #db8876;
-  padding: 8px 12px 12px;
+  padding: 0.5rem 0.75rem 0.75rem;
 }
 
 #contactModal .modal-title {
-  font-size: 64px;
+  font-size: 4rem;
   font-weight: 400;
   color: #000000;
 }
 
 #contactModal .modal-dialog {
-  max-width: 670px;
+  max-width: 41.875rem;
 }
 
 #contactModal .btn-close {
   filter: invert(1);
   opacity: 0.9;
-  font-size: 32px;
-  margin-top: 30px;
+  font-size: 2rem;
+  margin-top: 1.875rem;
 }
 
 #contactModal .modal-header {
   align-items: flex-start;
 }
 
-#lightboxModal.modal {
+#lightboxModal .modal {
   position: fixed;
 }
 #lightboxModal .modal-backdrop {
@@ -222,7 +217,7 @@ a {
   align-items: start;
 }
 #lightboxModal .modal-dialog {
-  max-width: min(92vw, 1050px);
+  max-width: min(95vw, 1150px);
 }
 
 #lightboxModal #lightboxImage,
@@ -244,14 +239,24 @@ a {
   padding: .5rem .75rem;
   text-align: left;
   color: #901c1c;
-  margin-left: 85px;
-  font-size: 24px;
+  margin-left: 8.5rem;
+  font-size: 1.5rem;
   font-weight: 400;
 }
 
-#lightboxModal .btn-close {
+#lightboxModal .modal-content {
+  position: relative;
+}
+
+#lightboxModal .lb-close {
+  position: absolute;
+  top: 1rem;
+  right: 3rem;
+  background: none;
+  border: 0;
   color: #901c1c;
-  font-size: 2rem;
+  cursor: pointer;
+  font-size: 3rem;
 }
 
 .lb-arrow {
@@ -268,16 +273,16 @@ a {
 }
 
 .lb-prev {
-  left: 0.5rem;
+  left: 3.5rem;
 }
 .lb-next {
-  right: 0.5rem;
+  right: 3.5rem;
 }
 
 .lb-arrow:focus {
-  outline: 2px solid #fff;
-  outline-offset: 2px;
-  border-radius: 6px;
+  outline: 0.125rem solid #fff;
+  outline-offset: 0.125rem;
+  border-radius: 0.375rem;
 }
 
 #modal header {
@@ -289,7 +294,7 @@ a {
 }
 
 #modal header h2 {
-  font-size: 64px;
+  font-size: 4rem;
   font-weight: normal;
   text-align: center;
 }
@@ -303,7 +308,7 @@ form {
 
 form label {
   color: #312e2e;
-  font-size: 36px;
+  font-size: 2.25rem;
 }
 
 form div {
@@ -311,69 +316,63 @@ form div {
   flex-direction: column;
   width: 100%;
   align-items: self-start;
-  margin-bottom: 26px;
+  margin-bottom: 1.625rem;
 }
 
 form input {
   width: 100%;
-  height: 68px;
+  height: 4.25rem;
   border: none;
-  border-radius: 5px;
-}
-
-.sort-bar {
-  margin: 25px 100px 0;
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  border-radius: 0.313rem;
 }
 
 .sort-label {
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 700;
 }
 
 .sort-bar{
-  margin:25px 100px 0;
-  position:relative;
-  z-index:2;
-  display:flex;
-  align-items:center;
-  gap:10px;
+  margin: 1.563rem 6.25rem 0;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
 }
 
-.btn.sort-btn {
+.btn.sort-btn,.btn.sort-btn:focus,
+.btn.sort-btn:active,
+.btn.sort-btn.show,
+.show > .btn.sort-btn.dropdown-toggle  {
   background: #901c1c;
   color: #fff;
-  height:69px;
-  width: 170px;
-  padding:.8rem 2.8rem .8rem 1rem;
-  border-radius:5px;
-  font-size:18px;
-  border-width:0;
+  height: 4.313rem;
+  width: 10.625rem;
+  padding: .8rem 2.8rem .8rem 1rem;
+  border-radius: 0.313rem;
+  font-size: 1.125rem;
+  border-width: 0;
 }
 
 .sort-menu {
-  --bs-dropdown-bg:#901c1c;
-  --bs-dropdown-color:#fff;
-  --bs-dropdown-link-color:#fff;
-  --bs-dropdown-link-hover-bg:#901c1c;
-  --bs-dropdown-link-hover-color:#fff;
-  --bs-dropdown-link-active-bg:#901c1c;
-  --bs-dropdown-link-active-color:#fff;
-  --bs-dropdown-border-color:transparent;
-  --bs-dropdown-min-width:170px;
-  border:none;
-  border-radius:8px;
-  padding:0;
-  box-shadow:0 6px 12px rgba(0,0,0,.2);
+  --bs-dropdown-bg: #901c1c;
+  --bs-dropdown-color: #fff;
+  --bs-dropdown-link-color: #fff;
+  --bs-dropdown-link-hover-bg: #901c1c;
+  --bs-dropdown-link-hover-color: #fff;
+  --bs-dropdown-link-active-bg: #901c1c;
+  --bs-dropdown-link-active-color: #fff;
+  --bs-dropdown-border-color: transparent;
+  --bs-dropdown-min-width: 10.625rem;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0;
+  box-shadow: 0 6px 12px rgba(0,0,0,.2);
 }
 
 .sort-menu .dropdown-item{
-  font-weight:700;
-  font-size:18px;
-  padding:.85rem 1rem;
-  border-top:1px solid rgba(255,255,255,.6);
+  font-weight: 700;
+  font-size: 18px;
+  padding: .85rem 1rem;
+  border-top: 1px solid rgba(255,255,255,.6);
 }

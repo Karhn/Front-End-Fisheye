@@ -2,16 +2,17 @@ import { photographerTemplate } from "../templates/photographer.js";
 
 async function getPhotographers() {
   try {
-    const response = await fetch("../data/photographers.json");
+    const response = await fetch("data/photographers.json");
+    if (!response.ok) throw new Error(`HTTP${response.status}`);
     const data = await response.json();
 
     console.log("Données JSON :", data.photographers);
 
     return {
-      photographers: data.photographers,
+      photographers: Array.isArray(data.photographers) ? data.photographers: [],
     };
   } catch (error) {
-    console.log("Erreurs :", error);
+    console.log("Erreurs chargement photographes:", error);
     return { photographers: [] };
   }
 }

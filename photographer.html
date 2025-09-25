@@ -64,7 +64,7 @@
         </div>
     </main>
 
-    <div class="modal fade" id="contactModal" tabindex="-1">
+    <div class="modal" id="contactModal" tabindex="-1">
       <div class="modal-dialog" role="document">
         <div class="modal-content contact-card" id="contact-modal">
           <div class="modal-header border-0">
@@ -123,7 +123,7 @@
     </div>
 
     <div
-      class="modal fade"
+      class="modal"
       id="lightboxModal"
       tabindex="-1"
       role="dialog"
@@ -134,23 +134,25 @@
     >
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content bg-white text-white position-relative">
-          <div class="modal-header border-0">
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close dialog"
-            ></button>
-          </div>
 
           <div class="modal-body text-center p-0">
+
+            <div class="modal-header border-0"></div>
+
             <div class="lb-frame" id="lightboxViewport" tabindex="-1">
               <img id="lightboxImage" class="img-fluid mx-auto" alt="" />
-              <video id="lightboxVideo" class="img-fluid mx-auto" hidden controls preaload="metadata"></video>
+              <video id="lightboxVideo" class="img-fluid mx-auto" hidden controls preload="metadata"></video>
             </div>
             <h3 class="modal-title" id="lightboxLabel"></h3>
           </div>
 
+          <button
+            type="button"
+            class="lb-close"
+            data-bs-dismiss="modal"
+            aria-label="Close dialog"
+          > ✖ 
+          </button>
           <button
             type="button"
             id="lightboxPreviousBtn"

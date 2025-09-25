@@ -12,7 +12,7 @@ export function photographerTemplate(data) {
     195: { x: "56%", y: "80%", s: 1.57}, // MARCEL
   }
 
-  const crop = CROPS[id];
+  const crop = CROPS[id] ?? { x: "50%", y: "50%", s: 1};
 
   function getUserCardDOM() {
     const article = document.createElement("article");
