@@ -59,7 +59,7 @@ function displayPhotographerHeader(photographer) {
     `Localisation : ${photographer.city}, ${photographer.country}. Phrase d'accroche : ${photographer.tagline}`
   );
 
-  const location = document.createElement("p");
+  const location = document.createElement("h2");
   location.classList.add("photographer-locationHeader");
   location.textContent = `${photographer.city}, ${photographer.country}`;
 
@@ -200,7 +200,6 @@ function displayPhotographerMedia(photographer, mediaList) {
 
     const likesCount = document.createElement("output");
     likesCount.classList.add("likes-count");
-    likesCount.setAttribute("tabindex", "0");
     likesCount.setAttribute("aria-live", "polite");
     const current = () => media.likes + (liked.has(media.id) ? 1 : 0);
     likesCount.value = current();
@@ -257,6 +256,7 @@ function bootstrapLightbox(lightboxItems) {
   const previousBtn = document.getElementById("lightboxPreviousBtn");
   const nextBtn = document.getElementById("lightboxNextBtn");
   const viewport = document.getElementById("lightboxViewport");
+  const announcer = document.getElementById("lightboxAnnouncer");
 
   let currentIndex = 0;
   let openerElement = null;
@@ -296,6 +296,10 @@ function bootstrapLightbox(lightboxItems) {
       imageElement.hidden = false;
       if (imageElement.src !== item.src) imageElement.src = item.src;
       imageElement.alt = item.title || "";
+    }
+
+    if (announcer) {
+      announcer.textContent = item.title || "";
     }
 
   }
@@ -405,6 +409,11 @@ function initDropdown(photographer, mediaList) {
     });
     btn.classList.add("is-open");
     menu.classList.add("is-open");
+  });
+
+  dropdown.addEventListener("hidden.bs.dropdown", () => {
+    btn.setAttribute("aria-expanded", "false");
+    btn.focus({ preventScroll: true });
   });
 
   menu.addEventListener("click", (e) => {

@@ -19,7 +19,7 @@ export function mediaFactory(media, photographerName) {
     mediaSrc = `assets/images/${folderName}/${media.image}`;
     mediaElement = document.createElement("img");
     mediaElement.setAttribute("src", mediaSrc);
-    mediaElement.setAttribute("alt", media.title);
+    mediaElement.alt = "";
     mediaElement.setAttribute("aria-label", media.title);
     mediaElement.loading = "lazy";
   } else if (media.video) {

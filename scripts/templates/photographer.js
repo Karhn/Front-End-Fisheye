@@ -45,8 +45,8 @@ export function photographerTemplate(data) {
 
     const infoGroup = document.createElement("div");
     infoGroup.classList.add("photographer-info");
-    infoGroup.setAttribute("tabindex", "0");
     infoGroup.setAttribute("role", "group");
+    infoGroup.setAttribute("tabindex", "0");
     infoGroup.setAttribute(
       "aria-label",
       `Localisation : ${city}, ${country}. Phrase d'accroche : ${tagline}. Tarif : ${price} euros par jour.`
