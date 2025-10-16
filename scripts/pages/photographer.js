@@ -201,6 +201,7 @@ function displayPhotographerMedia(photographer, mediaList) {
     const likesCount = document.createElement("output");
     likesCount.classList.add("likes-count");
     likesCount.setAttribute("aria-live", "polite");
+
     const current = () => media.likes + (liked.has(media.id) ? 1 : 0);
     likesCount.value = current();
     likesCount.textContent = String(current());
@@ -378,16 +379,6 @@ function sortAndDisplay(photographer, mediaList, criteria) {
       );
       break;
   }
-
-  console.log(
-    "Trier par :",
-    criteria,
-    sortedList.map((m) => ({
-      titre: m.title,
-      likes: m.likes,
-      date: m.date,
-    }))
-  );
 
   document.querySelector(".media-section")?.remove();
   displayPhotographerMedia(photographer, sortedList);
