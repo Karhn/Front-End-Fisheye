@@ -112,7 +112,7 @@ function createPhotographerInfoBar(photographer, mediaList) {
   likesCount.setAttribute("aria-live", "polite");
   likesCount.textContent = totalLikes;
 
-  const heartIcon = document.createElement("i");
+  const heartIcon = document.createElement("span");
   heartIcon.classList.add("fas", "fa-heart");
   heartIcon.setAttribute("aria-hidden", "true");
   heartIcon.setAttribute("focusable", "false");
