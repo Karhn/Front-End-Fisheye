@@ -215,7 +215,7 @@ function displayPhotographerMedia(photographer, mediaList) {
       `${liked.has(media.id) ? "Retirer" : "Ajouter"} un j'aime à ${media.title}`
     );
 
-    const heartIcon = document.createElement("i");
+    const heartIcon = document.createElement("span");
     heartIcon.classList.add("fas", "fa-heart");
     heartIcon.setAttribute("aria-label", "likes");
     likeButton.appendChild(heartIcon);
